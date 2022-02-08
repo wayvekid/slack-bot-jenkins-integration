@@ -7,7 +7,7 @@ pipeline {
         /* groovylint-disable-next-line SpaceInsideParentheses */
         stage('Checkout Codebase') {
             steps {
-                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsID: 'gitlab-ssh-key', url: 'gitlab.com/ljonllc/slack-bot-jenkins-integration.git']]]
+                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsID: 'github-ssh-key', url: 'github.com/wayvekid/slack-bot-jenkins-integration.git']]]
             }
         }
 
