@@ -1,13 +1,11 @@
-/* groovylint-disable LineLength */
-/* groovylint-disable-next-line CompileStatic */
 pipeline {
-    agent any
+
+    agent any 
 
     stages {
-        /* groovylint-disable-next-line SpaceInsideParentheses */
-        stage('Checkout Codebase') {
-            steps {
-                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsID: 'github-ssh-key', url: 'github.com/wayvekid/slack-bot-jenkins-integration.git']]]
+        stage('Checkout Codebase'){
+            steps{
+                checkout scm: [$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[credentialsId: 'github-ssh-key', url: 'git@github.com:wayvekid/slack-bot-jenkins-integration.git']]] 
             }
         }
 
@@ -17,23 +15,24 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Test'){
             steps {
-                echo 'Running Test on changes'
+                echo 'Running Tests on changes'
             }
         }
-
-        stage('Deploy') {
-            steps {
+        
+        stage('Deploy'){
+            steps{
                 echo 'Done!'
             }
         }
     }
 
     post {
+
         always {
-            echo 'Sending Slack Message'
-            sh "go run slack-notification-go ${BUILD_URL} ${currentBuild.currentResult} ${BUILD_NUMBER} ${JOB_NAME} "
+            echo 'Sending Slack message'
+            sh "go run send-jenkins-notification/slack-notification.go ${BUILD_URL} ${currentBuild.currentResult} ${BUILD_NUMBER} ${JOB_NAME} "
         }
     }
 }
